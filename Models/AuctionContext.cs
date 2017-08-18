@@ -7,9 +7,9 @@ namespace auction.Models
         // base() calls the parent class' constructor passing the "options" parameter along
         public AuctionContext(DbContextOptions<AuctionContext> options) : base(options) { }
         
-        public DbSet<User> Users { get; set; }
-        public DbSet<Auction> Auctions { get; set; }
-        public DbSet<Bid> Bids { get; set; }
+        public DbSet<User> users { get; set; }
+        public DbSet<Auction> auctions { get; set; }
+        public DbSet<Bid> bids { get; set; }
         
     }
 }

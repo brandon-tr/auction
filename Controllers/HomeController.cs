@@ -35,7 +35,7 @@ namespace auction.Controllers
         [Route("RegisterAccount")]
         public IActionResult RegisterAccount(UserReg newUser)
         {
-            User currentUser = _context.Users.SingleOrDefault(u => u.email == newUser.email);
+            User currentUser = _context.users.SingleOrDefault(u => u.email == newUser.email);
             if (currentUser != null)
             {
                 ViewBag.Error = "Email already in use";
@@ -52,9 +52,9 @@ namespace auction.Controllers
                         password = newUser.password,
                         money = 1000.00,
                     };
-                    _context.Users.Add(user);
+                    _context.users.Add(user);
                     _context.SaveChanges();
-                    User currentUsers = _context.Users.SingleOrDefault(u => u.email == newUser.email);
+                    User currentUsers = _context.users.SingleOrDefault(u => u.email == newUser.email);
                     HttpContext.Session.SetString("name", currentUsers.firstName);
                     HttpContext.Session.SetInt32("id", currentUsers.userId);
                     return RedirectToAction("Dashboard", "Auction");
@@ -67,7 +67,7 @@ namespace auction.Controllers
         [Route("login")]
         public IActionResult Login(string email, string password)
         {
-            User check = _context.Users.SingleOrDefault(user => user.email == email && user.password == password);
+            User check = _context.users.SingleOrDefault(user => user.email == email && user.password == password);
             if (check != null && check.email == email && check.password == password)
             {
                 HttpContext.Session.SetInt32("id", check.userId);

@@ -25,15 +25,15 @@ namespace auction.Controllers
             {
                 return Redirect("/");
             }
-            User user = _context.Users.SingleOrDefault(x => x.userId == HttpContext.Session.GetInt32("id"));
+            User user = _context.users.SingleOrDefault(x => x.userId == HttpContext.Session.GetInt32("id"));
             ViewBag.Wallet = user.money;
-            var auction = _context.Auctions.Include(x => x.bids).ThenInclude(c => c.user).ToList();
+            var auction = _context.auctions.Include(x => x.bids).ThenInclude(c => c.user).ToList();
             ViewBag.AllAuctions = auction;
             foreach (var item in auction)
             {
                 if (item.endDate == DateTime.Now)
                 {
-                    Auction removeAuction = _context.Auctions.Where(x => x.endDate == DateTime.Now).Include(c => c.bids).ThenInclude(i => i.user).SingleOrDefault();
+                    Auction removeAuction = _context.auctions.Where(x => x.endDate == DateTime.Now).Include(c => c.bids).ThenInclude(i => i.user).SingleOrDefault();
                     if (removeAuction.bids[0].user.userId == removeAuction.creatorId)
                     {
                         if(removeAuction.bids[0].userId == removeAuction.bids[0].user.userId){
@@ -61,8 +61,8 @@ namespace auction.Controllers
         [Route("Auction/Delete/{auctionId}")]
         public IActionResult Delete(int auctionId)
         {
-            Auction getAuction = _context.Auctions.Where(x => x.auctionId == auctionId).SingleOrDefault();
-            _context.Auctions.Remove(getAuction);
+            Auction getAuction = _context.auctions.Where(x => x.auctionId == auctionId).SingleOrDefault();
+            _context.auctions.Remove(getAuction);
             _context.SaveChanges();
             return RedirectToAction("Dashboard");
         }
@@ -106,7 +106,7 @@ namespace auction.Controllers
                         createdAt = DateTime.Now,
                         endDate = newAuction.endDate,
                     };
-                    _context.Auctions.Add(auction);
+                    _context.auctions.Add(auction);
                     _context.SaveChanges();
                     Bid bid = new Bid()
                     {
@@ -115,7 +115,7 @@ namespace auction.Controllers
                         bid = newAuction.bid,
                         name = "No One",
                     };
-                    _context.Bids.Add(bid);
+                    _context.bids.Add(bid);
                     _context.SaveChanges();
                     return RedirectToAction("Dashboard");
                 }
@@ -130,7 +130,7 @@ namespace auction.Controllers
             {
                 return Redirect("/");
             }
-            var auction = _context.Auctions.Where(x => x.auctionId == auctionId).Include(x => x.bids).ThenInclude(c => c.user).SingleOrDefault();
+            var auction = _context.auctions.Where(x => x.auctionId == auctionId).Include(x => x.bids).ThenInclude(c => c.user).SingleOrDefault();
             ViewBag.AllAuctions = auction;
             ViewBag.Id = HttpContext.Session.GetInt32("id");
             return View();
@@ -144,9 +144,9 @@ namespace auction.Controllers
             {
                 return Redirect("/");
             }
-            var bids = _context.Bids.Where(x => x.auctionId == auctionId).SingleOrDefault();
-            var auction = _context.Auctions.Where(x => x.auctionId == auctionId).SingleOrDefault();
-            var subtractMoney = _context.Users.Where(x => x.userId == HttpContext.Session.GetInt32("id")).SingleOrDefault();
+            var bids = _context.bids.Where(x => x.auctionId == auctionId).SingleOrDefault();
+            var auction = _context.auctions.Where(x => x.auctionId == auctionId).SingleOrDefault();
+            var subtractMoney = _context.users.Where(x => x.userId == HttpContext.Session.GetInt32("id")).SingleOrDefault();
             if (bids.bid >= bid || subtractMoney.money < bid || auction.currentBid > bid)
             {
                 return RedirectToAction("Bid", auctionId);
