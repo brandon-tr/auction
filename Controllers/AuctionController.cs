@@ -33,9 +33,16 @@ namespace auction.Controllers
             {
                 if (item.endDate == DateTime.Now)
                 {
-                   Auction removeAuction = _context.Auctions.Where(x => x.endDate == DateTime.Now).SingleOrDefault();
-                   _context.Remove(removeAuction);
-                   _context.SaveChanges();
+                    Auction removeAuction = _context.Auctions.Where(x => x.endDate == DateTime.Now).Include(c => c.bids).ThenInclude(i => i.user).SingleOrDefault();
+                    if (removeAuction.bids[0].user.userId == removeAuction.creatorId)
+                    {
+                        if(removeAuction.bids[0].userId == removeAuction.bids[0].user.userId){
+                            removeAuction.bids[0].user.money -= removeAuction.bids[0].bid;
+                            _context.SaveChanges();
+                        }
+                        _context.Remove(removeAuction);
+                        _context.SaveChanges();
+                    }
                 }
             }
             ViewBag.Id = HttpContext.Session.GetInt32("id");
