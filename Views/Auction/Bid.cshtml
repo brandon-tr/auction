@@ -1,0 +1,10 @@
+<h1>@ViewBag.AllAuctions.product</h1>
+<h3> Created By: @ViewBag.AllAuctions.bids[0].user.firstName </h3>
+<p>@ViewBag.AllAuctions.description </p>
+<p>Current Highest bid by: @ViewBag.AllAuctions.bids[0].name </p>
+<p>@ViewBag.AllAuctions.bids[0].bid </p>
+
+<form action="placeBid/@ViewBag.AllAuctions.auctionId" method="POST">
+    <input type="number" placeholder="Place your bid here" name="bid">
+    <input type="submit">
+</form> 

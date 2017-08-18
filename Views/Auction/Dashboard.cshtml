@@ -1,0 +1,35 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product </th>
+            <th>Seller </th>
+            <th>Top Bid </th>
+            <th>Time Remaining </th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach(var i in ViewBag.AllAuctions){
+            <tr>
+                <td><a href="Auction/@i.auctionId">@i.product </a></td>
+                <td>@i.bids[0].user.firstName </td>
+                <td>@i.bids[0].bid </td>
+                <td>@i.endDate.ToString("dd") Days Left</td>
+                @if(i.creatorId == ViewBag.Id){
+                <td><a href="auction/delete/@i.auctionId"> Delete </a> </td>
+                }
+                else{
+                    <td> </td>
+                }
+            </tr>
+        }
+        }
+    </tbody>
+
+
+<h4> Your money: @ViewBag.Wallet </h4>
+
+<a href="auction"> Add an auction </a>
+
+<a href="logout"> Logout </a>

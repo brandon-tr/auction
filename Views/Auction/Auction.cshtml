@@ -1,0 +1,11 @@
+@model auction.Models.AuctionReg
+
+<form asp-action="AddAuction" asp-controller="Auction" method="POST">
+    Name <input type="text" asp-for="product"> <span asp-validation-for="product"> </span>
+    Starting Bid <input type="number" asp-for="currentBid"> <span asp-validation-for="currentBid"> </span>
+    Description <br> <textarea cols="40" rows="5" asp-for="description"> </textarea><br> <span asp-validation-for="description"> </span>
+    End Date <input type="date" asp-for="endDate"> <span asp-validation-for="endDate"> </span>
+    <input type="submit" value="SUBMIT">
+</form>
+
+@ViewBag.Error
